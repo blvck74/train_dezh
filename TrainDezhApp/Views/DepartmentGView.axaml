@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TrainDezhApp.ViewModels"
+             xmlns:converters="using:TrainDezhApp.Converters"
+             x:Class="TrainDezhApp.Views.DepartmentGView"
+             x:DataType="vm:DepartmentGViewModel">
+
+    <ScrollViewer>
+        <StackPanel>
+            
+            <!-- Заголовок страницы -->
+            <TextBlock Text="🏢 Отдел Г" Classes="page-title"/>
+            <TextBlock Text="Управление персоналом и рабочими сменами" Classes="page-subtitle"/>
+
+            <!-- Список персонала -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="Персонал на смене" 
+                               FontSize="18" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,16"/>
+                    
+                    <!-- Заголовок таблицы -->
+                    <Border Background="#F8FAFC" 
+                            Margin="-20,-20,-20,0" 
+                            Padding="20,16">
+                        <Grid ColumnDefinitions="*,200,120">
+                        <TextBlock Grid.Column="0" 
+                                   Text="ФИО" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <TextBlock Grid.Column="1" 
+                                   Text="Должность" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <TextBlock Grid.Column="2" 
+                                   Text="Статус" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Строки данных -->
+                    <ItemsControl ItemsSource="{Binding Staff}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E2E8F0" 
+                                        BorderThickness="0,1,0,0" 
+                                        Padding="0,16">
+                                    <Grid ColumnDefinitions="*,200,120">
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Name}" 
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                        
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding Position}" 
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                        
+                                        <Border Grid.Column="2" 
+                                                Background="{Binding Status, Converter={x:Static converters:StaffStatusToColorConverter.Instance}}"
+                                                CornerRadius="12" 
+                                                Padding="8,4"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" 
+                                                       FontSize="12" 
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

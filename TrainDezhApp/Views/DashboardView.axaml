@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TrainDezhApp.ViewModels"
+             x:Class="TrainDezhApp.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+    <ScrollViewer>
+        <StackPanel>
+            
+            <!-- Заголовок страницы -->
+            <TextBlock Text="📊 Дашборд" Classes="page-title"/>
+            <TextBlock Text="Общий обзор состояния депо" Classes="page-subtitle"/>
+
+            <!-- Статистические карточки -->
+            <TextBlock Text="Основные показатели" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Margin="0,0,0,16"/>
+            
+            <ItemsControl ItemsSource="{Binding StatCards}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Classes="stat-card">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="{Binding Icon}" 
+                                               FontSize="24" 
+                                               Margin="0,0,12,0"/>
+                                    <TextBlock Text="{Binding Title}" 
+                                               FontSize="14" 
+                                               FontWeight="Medium"
+                                               Foreground="#64748B"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Value}" 
+                                           Classes="stat-number"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Последние активности -->
+            <TextBlock Text="Последние события" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Margin="0,32,0,16"/>
+            
+            <Border Classes="card">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding RecentActivities}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E2E8F0" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="0,12"
+                                        Margin="0,0,0,8">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Icon}" 
+                                                   FontSize="16" 
+                                                   Margin="0,0,16,0"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding Description}" 
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" 
+                                                   Text="{Binding Time}" 
+                                                   FontSize="12" 
+                                                   Foreground="#64748B"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Быстрые действия -->
+            <TextBlock Text="Быстрые действия" 
+                       FontSize="18" 
+                       FontWeight="SemiBold" 
+                       Margin="0,32,0,16"/>
+            
+            <UniformGrid Columns="3" Margin="0,0,0,24">
+                <Button Content="➕ Новая работа" 
+                        Background="#2563EB" 
+                        Foreground="White" 
+                        Padding="16,12" 
+                        Margin="0,0,8,0"
+                        CornerRadius="8"/>
+                <Button Content="⚠️ Сообщить об аварии" 
+                        Background="#EF4444" 
+                        Foreground="White" 
+                        Padding="16,12" 
+                        Margin="4,0"
+                        CornerRadius="8"/>
+                <Button Content="📝 Добавить заметку" 
+                        Background="#10B981" 
+                        Foreground="White" 
+                        Padding="16,12" 
+                        Margin="8,0,0,0"
+                        CornerRadius="8"/>
+            </UniformGrid>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

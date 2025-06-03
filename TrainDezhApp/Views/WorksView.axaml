@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TrainDezhApp.ViewModels"
+             xmlns:converters="using:TrainDezhApp.Converters"
+             x:Class="TrainDezhApp.Views.WorksView"
+             x:DataType="vm:WorksViewModel">
+
+    <ScrollViewer>
+        <StackPanel>
+            
+            <!-- Заголовок страницы -->
+            <TextBlock Text="🔧 Работы" Classes="page-title"/>
+            <TextBlock Text="Управление рабочими заданиями и их выполнением" Classes="page-subtitle"/>
+
+            <!-- Панель действий -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                <Button Content="➕ Новая работа" 
+                        Background="#2563EB" 
+                        Foreground="White" 
+                        Padding="12,8" 
+                        Margin="0,0,12,0"
+                        CornerRadius="6"/>
+                <Button Content="📊 Отчеты" 
+                        Background="#64748B" 
+                        Foreground="White" 
+                        Padding="12,8" 
+                        Margin="0,0,12,0"
+                        CornerRadius="6"/>
+                <Button Content="🔍 Фильтр" 
+                        Background="Transparent" 
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        Padding="12,8"
+                        CornerRadius="6"/>
+            </StackPanel>
+
+            <!-- Список работ -->
+            <Border Classes="card">
+                <StackPanel>
+                    
+                    <!-- Заголовок таблицы -->
+                    <Border Background="#F8FAFC" 
+                            Margin="-20,-20,-20,0" 
+                            Padding="20,16">
+                        <Grid ColumnDefinitions="*,120,100,150">
+                        <TextBlock Grid.Column="0" 
+                                   Text="Название работы" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <TextBlock Grid.Column="1" 
+                                   Text="Статус" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <TextBlock Grid.Column="2" 
+                                   Text="Приоритет" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        <TextBlock Grid.Column="3" 
+                                   Text="Исполнитель" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Строки данных -->
+                    <ItemsControl ItemsSource="{Binding Works}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E2E8F0" 
+                                        BorderThickness="0,1,0,0" 
+                                        Padding="0,16">
+                                    <Grid ColumnDefinitions="*,120,100,150">
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Title}" 
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                        
+                                        <Border Grid.Column="1" 
+                                                Background="{Binding Status, Converter={x:Static converters:StatusToColorConverter.Instance}}"
+                                                CornerRadius="12" 
+                                                Padding="8,4"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" 
+                                                       FontSize="12" 
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"/>
+                                        </Border>
+                                        
+                                        <Border Grid.Column="2" 
+                                                Background="{Binding Priority, Converter={x:Static converters:PriorityToColorConverter.Instance}}"
+                                                CornerRadius="12" 
+                                                Padding="8,4"
+                                                HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Priority}" 
+                                                       FontSize="12" 
+                                                       Foreground="White"
+                                                       HorizontalAlignment="Center"/>
+                                        </Border>
+                                        
+                                        <TextBlock Grid.Column="3" 
+                                                   Text="{Binding Assignee}" 
+                                                   FontSize="14"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TrainDezhApp.ViewModels"
+             x:Class="TrainDezhApp.Views.ShiftHandoverView"
+             x:DataType="vm:ShiftHandoverViewModel">
+
+    <ScrollViewer>
+        <StackPanel>
+            
+            <!-- Заголовок страницы -->
+            <TextBlock Text="🔄 Передача смены" Classes="page-title"/>
+            <TextBlock Text="Оформление передачи смены между бригадами" Classes="page-subtitle"/>
+
+            <!-- Информация о сменах -->
+            <Grid ColumnDefinitions="*,*" Margin="0,0,0,24">
+                <Border Grid.Column="0" Classes="card" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="Текущая смена" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,12"/>
+                        <TextBlock Text="{Binding CurrentShift}" 
+                                   FontSize="14"/>
+                    </StackPanel>
+                </Border>
+                
+                <Border Grid.Column="1" Classes="card" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Следующая смена" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,12"/>
+                        <TextBlock Text="{Binding NextShift}" 
+                                   FontSize="14"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Заметки для передачи -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="Заметки для передачи смены" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,16"/>
+                    
+                    <TextBox Text="{Binding HandoverNotes}" 
+                             AcceptsReturn="True" 
+                             TextWrapping="Wrap" 
+                             MinHeight="200" 
+                             Watermark="Введите важную информацию для следующей смены..."/>
+                    
+                    <Button Content="💾 Сохранить заметки" 
+                            Background="#2563EB" 
+                            Foreground="White" 
+                            Padding="16,12" 
+                            Margin="0,16,0,0"
+                            HorizontalAlignment="Left"
+                            CornerRadius="8"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
