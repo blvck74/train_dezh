@@ -9,90 +9,274 @@
         <StackPanel>
             
             <!-- Заголовок страницы -->
-            <TextBlock Text="🏢 Отдел Г" Classes="page-title"/>
-            <TextBlock Text="Управление персоналом и рабочими сменами" Classes="page-subtitle"/>
-
-            <!-- Панель действий -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                <Button Content="➕ Добавить сотрудника" 
-                        Background="#2563EB" 
-                        Foreground="White" 
-                        Padding="12,8" 
-                        Margin="0,0,12,0"
-                        CornerRadius="6"
-                        Command="{Binding AddStaffCommand}"/>
-                <Button Content="🔄 Обновить" 
+            <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,24">
+                <Button Grid.Column="0" 
+                        Content="← Назад" 
                         Background="#64748B" 
                         Foreground="White" 
                         Padding="12,8" 
                         CornerRadius="6"
-                        Command="{Binding RefreshCommand}"/>
-            </StackPanel>
+                        Command="{Binding GoBackCommand}"
+                        IsVisible="{Binding CanGoBack}"/>
+                
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="🏢 Отдел Г" Classes="page-title"/>
+                    <TextBlock Text="База знаний и документация" Classes="page-subtitle"/>
+                </StackPanel>
+            </Grid>
 
-            <!-- Список персонала -->
-            <Border Classes="card">
+            <!-- Уровень 1: Основные темы -->
+            <Border Classes="card" IsVisible="{Binding IsTopicsVisible}">
                 <StackPanel>
-                    <TextBlock Text="Персонал на смене" 
+                    <TextBlock Text="Выберите тему" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                Margin="0,0,0,16"/>
                     
-                    <!-- Заголовок таблицы -->
-                    <Border Background="#F8FAFC" 
-                            Margin="-20,-20,-20,0" 
-                            Padding="20,16">
-                        <Grid ColumnDefinitions="*,200,120">
-                        <TextBlock Grid.Column="0" 
-                                   Text="ФИО" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"/>
-                        <TextBlock Grid.Column="1" 
-                                   Text="Должность" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"/>
-                        <TextBlock Grid.Column="2" 
-                                   Text="Статус" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"/>
-                        </Grid>
-                    </Border>
-
-                    <!-- Строки данных -->
-                    <ItemsControl ItemsSource="{Binding Staff}">
+                    <ItemsControl ItemsSource="{Binding Topics}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="#E2E8F0" 
-                                        BorderThickness="0,1,0,0" 
-                                        Padding="0,16">
-                                    <Grid ColumnDefinitions="*,200,120">
-                                        <TextBlock Grid.Column="0" 
-                                                   Text="{Binding FullName}" 
+                                <Button Classes="topic-button"
+                                        Command="{Binding $parent[UserControl].DataContext.SelectTopicCommand}"
+                                        CommandParameter="{Binding}"
+                                        Margin="0,0,16,16">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Icon}" 
+                                                   FontSize="32" 
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBlock Text="{Binding Name}" 
+                                                   FontWeight="SemiBold" 
                                                    FontSize="14"
-                                                   VerticalAlignment="Center"/>
-                                        
-                                        <TextBlock Grid.Column="1" 
-                                                   Text="{Binding Position}" 
-                                                   FontSize="14"
-                                                   VerticalAlignment="Center"/>
-                                        
-                                        <Border Grid.Column="2" 
-                                                Background="{Binding Status, Converter={x:Static converters:StaffStatusToColorConverter.Instance}}"
-                                                CornerRadius="12" 
-                                                Padding="8,4"
-                                                HorizontalAlignment="Left">
-                                            <TextBlock Text="{Binding Status}" 
-                                                       FontSize="12" 
-                                                       Foreground="White"
-                                                       HorizontalAlignment="Center"/>
-                                        </Border>
-                                    </Grid>
-                                </Border>
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding Description}" 
+                                                   FontSize="12" 
+                                                   Foreground="#64748B"
+                                                   HorizontalAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   MaxWidth="150"/>
+                                    </StackPanel>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
                 </StackPanel>
             </Border>
+
+            <!-- Уровень 2: Подтемы -->
+            <Border Classes="card" IsVisible="{Binding IsSubtopicsVisible}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="{Binding SelectedTopic.Icon}" 
+                                   FontSize="24" 
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding SelectedTopic.Name}" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                    
+                    <ItemsControl ItemsSource="{Binding Subtopics}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="subtopic-button"
+                                        Command="{Binding $parent[UserControl].DataContext.SelectSubtopicCommand}"
+                                        CommandParameter="{Binding}"
+                                        Margin="0,0,0,12">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <TextBlock Grid.Column="0" 
+                                                   Text="{Binding Icon}" 
+                                                   FontSize="20" 
+                                                   Margin="0,0,12,0"
+                                                   VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding Name}" 
+                                                       FontWeight="SemiBold" 
+                                                       FontSize="14"/>
+                                            <TextBlock Text="{Binding Description}" 
+                                                       FontSize="12" 
+                                                       Foreground="#64748B"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="2" 
+                                                   Text="→" 
+                                                   FontSize="16" 
+                                                   Foreground="#64748B"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Уровень 3: Контент с редактором -->
+            <Grid IsVisible="{Binding IsContentVisible}" ColumnDefinitions="300,*">
+                
+                <!-- Список контента -->
+                <Border Grid.Column="0" Classes="card" Margin="0,0,12,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="{Binding SelectedSubtopic.Icon}" 
+                                       FontSize="20" 
+                                       Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding SelectedSubtopic.Name}" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <ItemsControl ItemsSource="{Binding Contents}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Classes="content-button"
+                                            Command="{Binding $parent[UserControl].DataContext.SelectContentCommand}"
+                                            CommandParameter="{Binding}"
+                                            Margin="0,0,0,8">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" 
+                                                       FontWeight="SemiBold" 
+                                                       FontSize="13"
+                                                       TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding UpdatedAt, StringFormat=Обновлено: dd.MM.yyyy}" 
+                                                       FontSize="11" 
+                                                       Foreground="#64748B"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Редактор контента -->
+                <Border Grid.Column="1" Classes="card">
+                    <StackPanel>
+                        
+                        <!-- Заголовок контента -->
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding SelectedContent.Title}" 
+                                       FontSize="18" 
+                                       FontWeight="SemiBold"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="✏️ Редактировать" 
+                                        Background="#2563EB" 
+                                        Foreground="White" 
+                                        Padding="8,6" 
+                                        CornerRadius="4"
+                                        FontSize="12"
+                                        Command="{Binding StartEditingCommand}"
+                                        IsVisible="{Binding !IsEditing}"/>
+                                <Button Content="💾 Сохранить" 
+                                        Background="#059669" 
+                                        Foreground="White" 
+                                        Padding="8,6" 
+                                        CornerRadius="4"
+                                        FontSize="12"
+                                        Margin="0,0,8,0"
+                                        Command="{Binding SaveContentCommand}"
+                                        IsVisible="{Binding IsEditing}"/>
+                                <Button Content="❌ Отмена" 
+                                        Background="#DC2626" 
+                                        Foreground="White" 
+                                        Padding="8,6" 
+                                        CornerRadius="4"
+                                        FontSize="12"
+                                        Command="{Binding CancelEditingCommand}"
+                                        IsVisible="{Binding IsEditing}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Панель инструментов редактора -->
+                        <Border Background="#F8FAFC" 
+                                Padding="12" 
+                                CornerRadius="6" 
+                                Margin="0,0,0,16"
+                                IsVisible="{Binding IsEditing}">
+                            <StackPanel>
+                                <!-- Форматирование текста -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="B" 
+                                            FontWeight="Bold"
+                                            Classes="format-button"
+                                            Command="{Binding ToggleBoldCommand}"
+                                            Background="{Binding IsBold, Converter={x:Static converters:BoolToColorConverter.Instance}}"/>
+                                    <Button Content="I" 
+                                            FontStyle="Italic"
+                                            Classes="format-button"
+                                            Command="{Binding ToggleItalicCommand}"
+                                            Background="{Binding IsItalic, Converter={x:Static converters:BoolToColorConverter.Instance}}"/>
+                                    <Button Content="U" 
+                                            Classes="format-button"
+                                            Command="{Binding ToggleUnderlineCommand}"
+                                            Background="{Binding IsUnderline, Converter={x:Static converters:BoolToColorConverter.Instance}}"/>
+                                </StackPanel>
+                                
+                                <!-- Выравнивание -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="⬅️" 
+                                            Classes="format-button"
+                                            Command="{Binding SetTextAlignCommand}"
+                                            CommandParameter="Left"/>
+                                    <Button Content="⬆️" 
+                                            Classes="format-button"
+                                            Command="{Binding SetTextAlignCommand}"
+                                            CommandParameter="Center"/>
+                                    <Button Content="➡️" 
+                                            Classes="format-button"
+                                            Command="{Binding SetTextAlignCommand}"
+                                            CommandParameter="Right"/>
+                                </StackPanel>
+                                
+                                <!-- Вставка -->
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="🔗 Ссылка" 
+                                            Classes="format-button"
+                                            Command="{Binding InsertLinkCommand}"/>
+                                    <Button Content="🖼️ Изображение" 
+                                            Classes="format-button"
+                                            Command="{Binding InsertImageCommand}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Текстовый редактор -->
+                        <TextBox Text="{Binding EditorContent}" 
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="400"
+                                 IsReadOnly="{Binding !IsEditing}"
+                                 Background="{Binding IsEditing, Converter={x:Static converters:BoolToBackgroundConverter.Instance}}"
+                                 BorderBrush="{Binding IsEditing, Converter={x:Static converters:BoolToBorderConverter.Instance}}"/>
+                        
+                        <!-- Информация о документе -->
+                        <StackPanel Orientation="Horizontal" 
+                                    Margin="0,16,0,0" 
+                                    HorizontalAlignment="Right">
+                            <TextBlock Text="Создано: " 
+                                       FontSize="12" 
+                                       Foreground="#64748B"/>
+                            <TextBlock Text="{Binding SelectedContent.CreatedAt, StringFormat=dd.MM.yyyy HH:mm}" 
+                                       FontSize="12" 
+                                       Foreground="#64748B"
+                                       Margin="0,0,16,0"/>
+                            <TextBlock Text="Обновлено: " 
+                                       FontSize="12" 
+                                       Foreground="#64748B"/>
+                            <TextBlock Text="{Binding SelectedContent.UpdatedAt, StringFormat=dd.MM.yyyy HH:mm}" 
+                                       FontSize="12" 
+                                       Foreground="#64748B"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+
+            </Grid>
 
         </StackPanel>
     </ScrollViewer>

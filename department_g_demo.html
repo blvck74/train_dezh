@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отдел Г - База знаний и документация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .back-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: none;
+        }
+
+        .back-button.visible {
+            display: block;
+        }
+
+        .title-section {
+            text-align: center;
+            flex: 1;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* Стили для уровня тем */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .topic-button {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 140px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topic-button:hover {
+            background: #f8fafc;
+            border-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .topic-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .topic-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .topic-description {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* Стили для уровня подтем */
+        .subtopic-button {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .subtopic-button:hover {
+            background: #f8fafc;
+            border-color: #2563eb;
+        }
+
+        .subtopic-icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .subtopic-content {
+            flex: 1;
+        }
+
+        .subtopic-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .subtopic-description {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .arrow {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Стили для уровня контента */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 12px;
+        }
+
+        .content-list {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .content-button {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: left;
+        }
+
+        .content-button:hover {
+            background: #f8fafc;
+            border-color: #2563eb;
+        }
+
+        .content-button.active {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .content-title {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .content-date {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        /* Стили для редактора */
+        .editor-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .editor-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .edit-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .save-button {
+            background: #059669;
+            color: white;
+        }
+
+        .cancel-button {
+            background: #dc2626;
+            color: white;
+        }
+
+        .toolbar {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .toolbar.visible {
+            display: block;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .format-button {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 8px;
+            min-width: 32px;
+            min-height: 32px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .format-button:hover {
+            background: #f8fafc;
+            border-color: #2563eb;
+        }
+
+        .format-button.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .editor-textarea {
+            width: 100%;
+            min-height: 400px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .editor-textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .editor-textarea[readonly] {
+            background: #f8fafc;
+            cursor: default;
+        }
+
+        .document-info {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-separator {
+            margin: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <div class="header">
+            <button class="back-button" id="backButton" onclick="goBack()">← Назад</button>
+            <div class="title-section">
+                <h1 class="page-title">🏢 Отдел Г</h1>
+                <p class="page-subtitle">База знаний и документация</p>
+            </div>
+        </div>
+
+        <!-- Хлебные крошки -->
+        <div class="breadcrumb" id="breadcrumb" style="display: none;">
+            <span class="breadcrumb-item" id="breadcrumbContent"></span>
+        </div>
+
+        <!-- Уровень 1: Основные темы -->
+        <div class="card" id="topicsLevel">
+            <h2 class="section-title">Выберите тему</h2>
+            <div class="topics-grid">
+                <div class="topic-button" onclick="selectTopic('safety', '🛡️', 'Безопасность труда')">
+                    <div class="topic-icon">🛡️</div>
+                    <div class="topic-name">Безопасность труда</div>
+                    <div class="topic-description">Правила и инструкции по безопасности</div>
+                </div>
+                <div class="topic-button" onclick="selectTopic('processes', '⚙️', 'Технологические процессы')">
+                    <div class="topic-icon">⚙️</div>
+                    <div class="topic-name">Технологические процессы</div>
+                    <div class="topic-description">Описание производственных процессов</div>
+                </div>
+                <div class="topic-button" onclick="selectTopic('documents', '📄', 'Документооборот')">
+                    <div class="topic-icon">📄</div>
+                    <div class="topic-name">Документооборот</div>
+                    <div class="topic-description">Ведение документации и отчётности</div>
+                </div>
+                <div class="topic-button" onclick="selectTopic('training', '🎓', 'Обучение персонала')">
+                    <div class="topic-icon">🎓</div>
+                    <div class="topic-name">Обучение персонала</div>
+                    <div class="topic-description">Материалы для обучения сотрудников</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Уровень 2: Подтемы -->
+        <div class="card hidden" id="subtopicsLevel">
+            <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                <span id="selectedTopicIcon" style="font-size: 24px; margin-right: 8px;"></span>
+                <h2 class="section-title" id="selectedTopicName" style="margin-bottom: 0;"></h2>
+            </div>
+            <div id="subtopicsList"></div>
+        </div>
+
+        <!-- Уровень 3: Контент с редактором -->
+        <div class="content-layout hidden" id="contentLevel">
+            <!-- Список контента -->
+            <div class="content-list">
+                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                    <span id="selectedSubtopicIcon" style="font-size: 20px; margin-right: 8px;"></span>
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 0;" id="selectedSubtopicName"></h3>
+                </div>
+                <div id="contentsList"></div>
+            </div>
+
+            <!-- Редактор контента -->
+            <div class="editor-section">
+                <div class="editor-header">
+                    <h3 class="editor-title" id="contentTitle">Выберите документ</h3>
+                    <div class="editor-actions">
+                        <button class="action-button edit-button" id="editButton" onclick="startEditing()">✏️ Редактировать</button>
+                        <button class="action-button save-button hidden" id="saveButton" onclick="saveContent()">💾 Сохранить</button>
+                        <button class="action-button cancel-button hidden" id="cancelButton" onclick="cancelEditing()">❌ Отмена</button>
+                    </div>
+                </div>
+
+                <!-- Панель инструментов редактора -->
+                <div class="toolbar" id="toolbar">
+                    <div class="toolbar-group">
+                        <button class="format-button" onclick="toggleFormat('bold')" title="Жирный"><b>B</b></button>
+                        <button class="format-button" onclick="toggleFormat('italic')" title="Курсив"><i>I</i></button>
+                        <button class="format-button" onclick="toggleFormat('underline')" title="Подчёркнутый"><u>U</u></button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="format-button" onclick="setAlign('left')" title="По левому краю">⬅️</button>
+                        <button class="format-button" onclick="setAlign('center')" title="По центру">⬆️</button>
+                        <button class="format-button" onclick="setAlign('right')" title="По правому краю">➡️</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="format-button" onclick="insertLink()" title="Вставить ссылку">🔗 Ссылка</button>
+                        <button class="format-button" onclick="insertImage()" title="Вставить изображение">🖼️ Изображение</button>
+                    </div>
+                </div>
+
+                <textarea class="editor-textarea" id="editorTextarea" readonly placeholder="Выберите документ для просмотра или редактирования"></textarea>
+
+                <div class="document-info" id="documentInfo" style="display: none;">
+                    <span>Создано: <span id="createdDate"></span></span>
+                    <span>Обновлено: <span id="updatedDate"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 'topics';
+        let selectedTopic = null;
+        let selectedSubtopic = null;
+        let selectedContent = null;
+        let isEditing = false;
+
+        const topics = {
+            safety: {
+                name: 'Безопасность труда',
+                icon: '🛡️',
+                subtopics: {
+                    general: { name: 'Общие правила', icon: '📋', description: 'Основные правила безопасности' },
+                    protection: { name: 'Средства защиты', icon: '🦺', description: 'Индивидуальные средства защиты' }
+                }
+            },
+            processes: {
+                name: 'Технологические процессы',
+                icon: '⚙️',
+                subtopics: {
+                    operations: { name: 'Основные операции', icon: '🔧', description: 'Стандартные технологические операции' }
+                }
+            },
+            documents: {
+                name: 'Документооборот',
+                icon: '📄',
+                subtopics: {
+                    reports: { name: 'Отчёты', icon: '📊', description: 'Формы отчётности' }
+                }
+            },
+            training: {
+                name: 'Обучение персонала',
+                icon: '🎓',
+                subtopics: {
+                    newEmployees: { name: 'Новые сотрудники', icon: '👤', description: 'Программа адаптации' }
+                }
+            }
+        };
+
+        const contents = {
+            general: [
+                { id: 1, title: 'Инструкция по ТБ', content: 'Основные правила техники безопасности на рабочем месте:\n\n1. Перед началом работы проверить исправность оборудования\n2. Использовать средства индивидуальной защиты\n3. Соблюдать порядок на рабочем месте\n4. При обнаружении неисправностей немедленно сообщить руководству\n\nДанная инструкция является обязательной для всех сотрудников отдела.', created: '15.01.2024 09:00', updated: '20.05.2024 14:30' }
+            ],
+            protection: [
+                { id: 2, title: 'СИЗ на производстве', content: 'Перечень и правила использования средств индивидуальной защиты:\n\n• Каски защитные\n• Очки защитные\n• Респираторы\n• Перчатки рабочие\n• Обувь защитная\n\nВсе СИЗ должны проходить регулярную проверку и замену согласно установленным нормам.', created: '10.02.2024 10:15', updated: '18.05.2024 16:45' }
+            ],
+            operations: [
+                { id: 3, title: 'Порядок выполнения работ', content: 'Последовательность выполнения основных технологических операций:\n\n1. Подготовительный этап\n2. Основные операции\n3. Контроль качества\n4. Завершающий этап\n\nКаждый этап должен выполняться в строгом соответствии с технологическими картами.', created: '05.03.2024 11:20', updated: '22.05.2024 13:15' }
+            ],
+            reports: [
+                { id: 4, title: 'Ежедневные отчёты', content: 'Форма и порядок заполнения ежедневных отчётов:\n\n- Время начала и окончания смены\n- Выполненные работы\n- Использованные материалы\n- Замечания и предложения\n\nОтчёты должны подаваться до 18:00 каждого рабочего дня.', created: '12.04.2024 08:30', updated: '25.05.2024 12:00' }
+            ],
+            newEmployees: [
+                { id: 5, title: 'План адаптации', content: 'Программа адаптации новых сотрудников отдела:\n\nПервая неделя:\n- Знакомство с коллективом\n- Изучение правил внутреннего распорядка\n- Инструктаж по технике безопасности\n\nВторая неделя:\n- Изучение рабочих процессов\n- Работа под руководством наставника\n\nТретья неделя:\n- Самостоятельное выполнение простых задач\n- Промежуточная аттестация', created: '20.04.2024 09:45', updated: '28.05.2024 15:20' }
+            ]
+        };
+
+        function selectTopic(topicId, icon, name) {
+            selectedTopic = topicId;
+            currentLevel = 'subtopics';
+            
+            document.getElementById('topicsLevel').classList.add('hidden');
+            document.getElementById('subtopicsLevel').classList.remove('hidden');
+            document.getElementById('backButton').classList.add('visible');
+            
+            document.getElementById('selectedTopicIcon').textContent = icon;
+            document.getElementById('selectedTopicName').textContent = name;
+            
+            const subtopicsList = document.getElementById('subtopicsList');
+            subtopicsList.innerHTML = '';
+            
+            const topic = topics[topicId];
+            for (const [subtopicId, subtopic] of Object.entries(topic.subtopics)) {
+                const subtopicElement = document.createElement('div');
+                subtopicElement.className = 'subtopic-button';
+                subtopicElement.onclick = () => selectSubtopic(subtopicId, subtopic.icon, subtopic.name);
+                subtopicElement.innerHTML = `
+                    <span class="subtopic-icon">${subtopic.icon}</span>
+                    <div class="subtopic-content">
+                        <div class="subtopic-name">${subtopic.name}</div>
+                        <div class="subtopic-description">${subtopic.description}</div>
+                    </div>
+                    <span class="arrow">→</span>
+                `;
+                subtopicsList.appendChild(subtopicElement);
+            }
+            
+            updateBreadcrumb();
+        }
+
+        function selectSubtopic(subtopicId, icon, name) {
+            selectedSubtopic = subtopicId;
+            currentLevel = 'content';
+            
+            document.getElementById('subtopicsLevel').classList.add('hidden');
+            document.getElementById('contentLevel').classList.remove('hidden');
+            
+            document.getElementById('selectedSubtopicIcon').textContent = icon;
+            document.getElementById('selectedSubtopicName').textContent = name;
+            
+            const contentsList = document.getElementById('contentsList');
+            contentsList.innerHTML = '';
+            
+            const contentItems = contents[subtopicId] || [];
+            contentItems.forEach(content => {
+                const contentElement = document.createElement('div');
+                contentElement.className = 'content-button';
+                contentElement.onclick = () => selectContent(content);
+                contentElement.innerHTML = `
+                    <div class="content-title">${content.title}</div>
+                    <div class="content-date">Обновлено: ${content.updated}</div>
+                `;
+                contentsList.appendChild(contentElement);
+            });
+            
+            updateBreadcrumb();
+        }
+
+        function selectContent(content) {
+            selectedContent = content;
+            
+            // Убираем активный класс со всех кнопок контента
+            document.querySelectorAll('.content-button').forEach(btn => btn.classList.remove('active'));
+            // Добавляем активный класс к выбранной кнопке
+            event.target.closest('.content-button').classList.add('active');
+            
+            document.getElementById('contentTitle').textContent = content.title;
+            document.getElementById('editorTextarea').value = content.content;
+            document.getElementById('createdDate').textContent = content.created;
+            document.getElementById('updatedDate').textContent = content.updated;
+            document.getElementById('documentInfo').style.display = 'flex';
+            document.getElementById('editButton').style.display = 'block';
+        }
+
+        function goBack() {
+            if (currentLevel === 'content') {
+                currentLevel = 'subtopics';
+                document.getElementById('contentLevel').classList.add('hidden');
+                document.getElementById('subtopicsLevel').classList.remove('hidden');
+                selectedSubtopic = null;
+                selectedContent = null;
+                cancelEditing();
+            } else if (currentLevel === 'subtopics') {
+                currentLevel = 'topics';
+                document.getElementById('subtopicsLevel').classList.add('hidden');
+                document.getElementById('topicsLevel').classList.remove('hidden');
+                document.getElementById('backButton').classList.remove('visible');
+                selectedTopic = null;
+            }
+            updateBreadcrumb();
+        }
+
+        function startEditing() {
+            if (!selectedContent) return;
+            
+            isEditing = true;
+            document.getElementById('editorTextarea').readOnly = false;
+            document.getElementById('editorTextarea').style.background = 'white';
+            document.getElementById('toolbar').classList.add('visible');
+            document.getElementById('editButton').classList.add('hidden');
+            document.getElementById('saveButton').classList.remove('hidden');
+            document.getElementById('cancelButton').classList.remove('hidden');
+        }
+
+        function saveContent() {
+            if (!selectedContent) return;
+            
+            selectedContent.content = document.getElementById('editorTextarea').value;
+            selectedContent.updated = new Date().toLocaleString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            document.getElementById('updatedDate').textContent = selectedContent.updated;
+            cancelEditing();
+            
+            // Обновляем дату в списке контента
+            const activeButton = document.querySelector('.content-button.active .content-date');
+            if (activeButton) {
+                activeButton.textContent = `Обновлено: ${selectedContent.updated}`;
+            }
+        }
+
+        function cancelEditing() {
+            isEditing = false;
+            document.getElementById('editorTextarea').readOnly = true;
+            document.getElementById('editorTextarea').style.background = '#f8fafc';
+            document.getElementById('toolbar').classList.remove('visible');
+            document.getElementById('editButton').classList.remove('hidden');
+            document.getElementById('saveButton').classList.add('hidden');
+            document.getElementById('cancelButton').classList.add('hidden');
+            
+            if (selectedContent) {
+                document.getElementById('editorTextarea').value = selectedContent.content;
+            }
+        }
+
+        function toggleFormat(format) {
+            const button = event.target;
+            button.classList.toggle('active');
+            // Здесь можно добавить логику форматирования текста
+        }
+
+        function setAlign(align) {
+            document.querySelectorAll('.toolbar-group:nth-child(2) .format-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            // Здесь можно добавить логику выравнивания текста
+        }
+
+        function insertLink() {
+            const url = prompt('Введите URL ссылки:');
+            const text = prompt('Введите текст ссылки:');
+            if (url && text) {
+                const textarea = document.getElementById('editorTextarea');
+                const linkText = `[${text}](${url})`;
+                textarea.value += linkText;
+            }
+        }
+
+        function insertImage() {
+            const url = prompt('Введите URL изображения:');
+            const alt = prompt('Введите описание изображения:');
+            if (url && alt) {
+                const textarea = document.getElementById('editorTextarea');
+                const imageText = `![${alt}](${url})`;
+                textarea.value += imageText;
+            }
+        }
+
+        function updateBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            const breadcrumbContent = document.getElementById('breadcrumbContent');
+            
+            if (currentLevel === 'topics') {
+                breadcrumb.style.display = 'none';
+            } else {
+                breadcrumb.style.display = 'flex';
+                let content = '';
+                
+                if (selectedTopic) {
+                    content += `${topics[selectedTopic].icon} ${topics[selectedTopic].name}`;
+                }
+                
+                if (selectedSubtopic && selectedTopic) {
+                    content += ` <span class="breadcrumb-separator">→</span> ${topics[selectedTopic].subtopics[selectedSubtopic].icon} ${topics[selectedTopic].subtopics[selectedSubtopic].name}`;
+                }
+                
+                breadcrumbContent.innerHTML = content;
+            }
+        }
+    </script>
+</body>
+</html>
