@@ -1,0 +1,145 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TrainDezhApp.ViewModels"
+        x:Class="TrainDezhApp.Views.LoginWindow"
+        x:DataType="vm:LoginViewModel"
+        Title="Авторизация - Система управления железнодорожным депо"
+        Width="450"
+        Height="350"
+        MinWidth="450"
+        MinHeight="350"
+        MaxWidth="450"
+        MaxHeight="350"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        Icon="/Assets/avalonia-logo.ico">
+
+    <Design.DataContext>
+        <vm:LoginViewModel/>
+    </Design.DataContext>
+
+    <Grid Background="#F8FAFC">
+        <Border Background="White"
+                CornerRadius="12"
+                BoxShadow="0 4 20 0 #00000020"
+                Margin="40"
+                Padding="40">
+            
+            <StackPanel Spacing="24">
+                
+                <!-- Заголовок -->
+                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                    <TextBlock Text="🚂" 
+                               FontSize="48" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="ЖД Депо" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="#1E293B"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Система управления" 
+                               FontSize="14" 
+                               Foreground="#64748B"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Форма входа -->
+                <StackPanel Spacing="16">
+                    
+                    <!-- Поле логина -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Логин" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <TextBox Text="{Binding Username}"
+                                 Watermark="Введите логин"
+                                 Padding="12"
+                                 CornerRadius="6"
+                                 BorderThickness="1"
+                                 BorderBrush="#D1D5DB"
+                                 Background="White"/>
+                    </StackPanel>
+
+                    <!-- Поле пароля -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Пароль" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <TextBox Text="{Binding Password}"
+                                 Watermark="Введите пароль"
+                                 PasswordChar="•"
+                                 Padding="12"
+                                 CornerRadius="6"
+                                 BorderThickness="1"
+                                 BorderBrush="#D1D5DB"
+                                 Background="White"/>
+                    </StackPanel>
+
+                    <!-- Сообщение об ошибке -->
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#DC2626"
+                               FontSize="12"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                               TextWrapping="Wrap"/>
+
+                    <!-- Кнопка входа -->
+                    <Button Command="{Binding LoginCommand}"
+                            Content="Войти"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Padding="0,12"
+                            FontWeight="Medium"
+                            Background="#2563EB"
+                            Foreground="White"
+                            CornerRadius="6"
+                            BorderThickness="0">
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Background" Value="#1D4ED8"/>
+                            </Style>
+                            <Style Selector="Button:pressed">
+                                <Setter Property="Background" Value="#1E40AF"/>
+                            </Style>
+                            <Style Selector="Button:disabled">
+                                <Setter Property="Background" Value="#9CA3AF"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+
+                    <!-- Индикатор загрузки -->
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center"
+                                Spacing="8"
+                                IsVisible="{Binding IsLoading}">
+                        <TextBlock Text="⏳" FontSize="14"/>
+                        <TextBlock Text="Проверка данных..." 
+                                   FontSize="12" 
+                                   Foreground="#64748B"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!-- Информация по умолчанию -->
+                <Border Background="#F1F5F9" 
+                        CornerRadius="6" 
+                        Padding="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Данные по умолчанию:" 
+                                   FontSize="11" 
+                                   FontWeight="Medium"
+                                   Foreground="#475569"/>
+                        <TextBlock Text="Логин: root" 
+                                   FontSize="11" 
+                                   Foreground="#64748B"/>
+                        <TextBlock Text="Пароль: admin123" 
+                                   FontSize="11" 
+                                   Foreground="#64748B"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</Window>

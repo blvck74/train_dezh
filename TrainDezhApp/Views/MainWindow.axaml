@@ -1,0 +1,139 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TrainDezhApp.ViewModels"
+        xmlns:views="using:TrainDezhApp.Views"
+        xmlns:converters="using:TrainDezhApp.Converters"
+        x:Class="TrainDezhApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Система управления железнодорожным депо"
+        Width="1400"
+        Height="900"
+        MinWidth="1200"
+        MinHeight="700"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="280,*">
+        
+        <!-- Боковая панель навигации -->
+        <Border Grid.Column="0" Classes="sidebar">
+            <StackPanel Margin="0,20">
+                
+                <!-- Заголовок приложения -->
+                <StackPanel Margin="20,0,20,30">
+                    <TextBlock Text="🚂 ЖД Депо" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="#2563EB"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Система управления" 
+                               FontSize="12" 
+                               Foreground="#64748B"
+                               HorizontalAlignment="Center"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <!-- Навигационное меню -->
+                <ItemsControl ItemsSource="{Binding NavigationItems}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="nav-button"
+                                    Classes.active="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SelectedNavItem, Converter={x:Static converters:EqualityConverter.Instance}, ConverterParameter={Binding}}"
+                                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).NavigateCommand}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Icon}" 
+                                               FontSize="16" 
+                                               Margin="0,0,12,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Title}" 
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Информация о пользователе -->
+                <Border Margin="20,40,20,0" 
+                        Background="#E2E8F0" 
+                        CornerRadius="8" 
+                        Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="👤 Текущий пользователь" 
+                                   FontSize="12" 
+                                   Foreground="#64748B"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding CurrentUserName}" 
+                                   FontWeight="Medium" 
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding CurrentUserRole}" 
+                                   FontSize="12" 
+                                   Foreground="#64748B"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Основная контентная область -->
+        <Border Grid.Column="1" Classes="content-area">
+            <ContentControl Content="{Binding CurrentPage}">
+                <ContentControl.DataTemplates>
+                    
+                    <!-- Шаблон для дашборда -->
+                    <DataTemplate DataType="vm:DashboardViewModel">
+                        <views:DashboardView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для работ -->
+                    <DataTemplate DataType="vm:WorksViewModel">
+                        <views:WorksView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для аварий -->
+                    <DataTemplate DataType="vm:AccidentsViewModel">
+                        <views:AccidentsView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для передачи смены -->
+                    <DataTemplate DataType="vm:ShiftHandoverViewModel">
+                        <views:ShiftHandoverView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для отдела Г -->
+                    <DataTemplate DataType="vm:DepartmentGViewModel">
+                        <views:DepartmentGView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для МЗ -->
+                    <DataTemplate DataType="vm:MaterialsViewModel">
+                        <views:MaterialsView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для заметок -->
+                    <DataTemplate DataType="vm:NotesViewModel">
+                        <views:NotesView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для параметров -->
+                    <DataTemplate DataType="vm:SettingsViewModel">
+                        <views:SettingsView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для управления пользователями -->
+                    <DataTemplate DataType="vm:UserManagementViewModel">
+                        <views:UserManagementView/>
+                    </DataTemplate>
+                    
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </Border>
+
+    </Grid>
+
+</Window>

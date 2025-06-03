@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrainDezhApp - Макет приложения</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F8FAFC;
+            height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #1E293B;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .app-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+        
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: #CBD5E1;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: #334155;
+            color: #F1F5F9;
+        }
+        
+        .nav-item.active {
+            background: #0F172A;
+            color: #3B82F6;
+            border-left-color: #3B82F6;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-header {
+            background: white;
+            padding: 24px 32px;
+            border-bottom: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1E293B;
+        }
+        
+        .content-body {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid #3B82F6;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #64748B;
+            font-size: 14px;
+        }
+        
+        .table-header {
+            background: #F8FAFC;
+            padding: 16px 20px;
+            border-radius: 8px 8px 0 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .table-row {
+            padding: 16px 20px;
+            border-bottom: 1px solid #E2E8F0;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            max-width: fit-content;
+        }
+        
+        .status-active { background: #DCFCE7; color: #166534; }
+        .status-pending { background: #FEF3C7; color: #92400E; }
+        .status-completed { background: #DBEAFE; color: #1E40AF; }
+        .status-critical { background: #FEE2E2; color: #DC2626; }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #3B82F6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="app-header">
+            <div class="app-title">TrainDezhApp</div>
+        </div>
+        <nav class="nav-menu">
+            <a href="#dashboard" class="nav-item active" onclick="showTab('dashboard')">📊 Дашборд</a>
+            <a href="#works" class="nav-item" onclick="showTab('works')">🔧 Работы</a>
+            <a href="#accidents" class="nav-item" onclick="showTab('accidents')">⚠️ Аварии</a>
+            <a href="#shift" class="nav-item" onclick="showTab('shift')">🔄 Передача смены</a>
+            <a href="#department" class="nav-item" onclick="showTab('department')">👥 Отдел Г</a>
+            <a href="#materials" class="nav-item" onclick="showTab('materials')">📦 МЗ</a>
+            <a href="#notes" class="nav-item" onclick="showTab('notes')">📝 Заметки</a>
+            <a href="#settings" class="nav-item" onclick="showTab('settings')">⚙️ Параметры</a>
+        </nav>
+    </div>
+    
+    <div class="main-content">
+        <div class="content-header">
+            <h1 class="page-title" id="page-title">Дашборд</h1>
+        </div>
+        
+        <div class="content-body">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Активных работ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Критических аварий</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Сотрудников на смене</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label">Готовность оборудования</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Последние события</h3>
+                    <div class="table-header">
+                        <div>Событие</div>
+                        <div>Время</div>
+                        <div>Статус</div>
+                        <div>Приоритет</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Плановое ТО локомотива №1234</div>
+                        <div>14:30</div>
+                        <div><span class="status-badge status-active">Выполняется</span></div>
+                        <div><span class="status-badge status-pending">Средний</span></div>
+                    </div>
+                    <div class="table-row">
+                        <div>Авария на участке км 15</div>
+                        <div>13:45</div>
+                        <div><span class="status-badge status-critical">Критично</span></div>
+                        <div><span class="status-badge status-critical">Высокий</span></div>
+                    </div>
+                    <div class="table-row">
+                        <div>Замена тормозных колодок</div>
+                        <div>12:20</div>
+                        <div><span class="status-badge status-completed">Завершено</span></div>
+                        <div><span class="status-badge status-active">Низкий</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Works Tab -->
+            <div id="works" class="tab-content" style="display: none;">
+                <div style="margin-bottom: 24px;">
+                    <button class="btn btn-primary">+ Добавить работу</button>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Список работ</h3>
+                    <div class="table-header">
+                        <div>Название работы</div>
+                        <div>Приоритет</div>
+                        <div>Статус</div>
+                        <div>Исполнитель</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Техническое обслуживание локомотива №1234</div>
+                        <div><span class="status-badge status-pending">Средний</span></div>
+                        <div><span class="status-badge status-active">В работе</span></div>
+                        <div>Иванов И.И.</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Замена рельсов на участке км 25-30</div>
+                        <div><span class="status-badge status-critical">Высокий</span></div>
+                        <div><span class="status-badge status-pending">Запланировано</span></div>
+                        <div>Петров П.П.</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Проверка сигнализации</div>
+                        <div><span class="status-badge status-active">Низкий</span></div>
+                        <div><span class="status-badge status-completed">Завершено</span></div>
+                        <div>Сидоров С.С.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Accidents Tab -->
+            <div id="accidents" class="tab-content" style="display: none;">
+                <div style="margin-bottom: 24px;">
+                    <button class="btn btn-primary">+ Зарегистрировать аварию</button>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Журнал аварий</h3>
+                    <div class="table-header">
+                        <div>Описание</div>
+                        <div>Дата/Время</div>
+                        <div>Серьезность</div>
+                        <div>Статус</div>
+                    </div>
+                    <div class="table-row">
+                        <div>Сход вагона на км 15</div>
+                        <div>03.06.2025 13:45</div>
+                        <div><span class="status-badge status-critical">Критическая</span></div>
+                        <div><span class="status-badge status-active">Расследуется</span></div>
+                    </div>
+                    <div class="table-row">
+                        <div>Неисправность светофора</div>
+                        <div>03.06.2025 10:20</div>
+                        <div><span class="status-badge status-pending">Средняя</span></div>
+                        <div><span class="status-badge status-completed">Устранена</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other tabs would be similar... -->
+            <div id="shift" class="tab-content" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Передача смены</h3>
+                    <p>Здесь будет форма для передачи смены между дежурными...</p>
+                </div>
+            </div>
+            
+            <div id="department" class="tab-content" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Отдел Г</h3>
+                    <p>Информация о сотрудниках отдела Г...</p>
+                </div>
+            </div>
+            
+            <div id="materials" class="tab-content" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Материально-техническое снабжение</h3>
+                    <p>Учет материалов и запчастей...</p>
+                </div>
+            </div>
+            
+            <div id="notes" class="tab-content" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Заметки</h3>
+                    <p>Личные заметки дежурного...</p>
+                </div>
+            </div>
+            
+            <div id="settings" class="tab-content" style="display: none;">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px; color: #1E293B;">Параметры</h3>
+                    <p>Настройки приложения...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabId) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+            
+            // Remove active class from all nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabId).style.display = 'block';
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Дашборд',
+                'works': 'Работы',
+                'accidents': 'Аварии',
+                'shift': 'Передача смены',
+                'department': 'Отдел Г',
+                'materials': 'МЗ',
+                'notes': 'Заметки',
+                'settings': 'Параметры'
+            };
+            document.getElementById('page-title').textContent = titles[tabId];
+        }
+    </script>
+</body>
+</html>

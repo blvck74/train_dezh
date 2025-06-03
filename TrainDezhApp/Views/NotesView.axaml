@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TrainDezhApp.ViewModels"
+             xmlns:converters="using:TrainDezhApp.Converters"
+             x:Class="TrainDezhApp.Views.NotesView"
+             x:DataType="vm:NotesViewModel">
+
+    <ScrollViewer>
+        <StackPanel>
+            
+            <!-- Заголовок страницы -->
+            <TextBlock Text="📝 Заметки" Classes="page-title"/>
+            <TextBlock Text="Личные заметки и напоминания" Classes="page-subtitle"/>
+
+            <!-- Добавление новой заметки -->
+            <Border Classes="card" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="Добавить новую заметку" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,12"/>
+                    
+                    <TextBox Text="{Binding NewNoteText}" 
+                             AcceptsReturn="True" 
+                             TextWrapping="Wrap" 
+                             MinHeight="100" 
+                             Watermark="Введите текст заметки..."/>
+                    
+                    <Button Content="➕ Добавить заметку" 
+                            Background="#2563EB" 
+                            Foreground="White" 
+                            Padding="12,8" 
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Left"
+                            CornerRadius="6"
+                            Command="{Binding AddNoteCommand}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Список заметок -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="Мои заметки" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,16"/>
+                    
+                    <ItemsControl ItemsSource="{Binding Notes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E2E8F0" 
+                                        BorderThickness="0,0,0,1" 
+                                        Padding="0,16"
+                                        Margin="0,0,0,8">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Content}" 
+                                                       FontSize="14"
+                                                       TextWrapping="Wrap"
+                                                       Margin="0,0,0,8"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Background="{Binding Priority, Converter={x:Static converters:PriorityToColorConverter.Instance}}"
+                                                        CornerRadius="8" 
+                                                        Padding="6,2" 
+                                                        Margin="0,0,8,0">
+                                                    <TextBlock Text="{Binding Priority}" 
+                                                               FontSize="10" 
+                                                               FontWeight="Medium" 
+                                                               Foreground="White"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding CreatedAt, StringFormat='{}{0:HH:mm}'}" 
+                                                           FontSize="12" 
+                                                           Foreground="#64748B"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <Button Grid.Column="1" 
+                                                Content="🗑️" 
+                                                Background="Transparent"
+                                                Foreground="#EF4444"
+                                                VerticalAlignment="Top"
+                                                Margin="16,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
