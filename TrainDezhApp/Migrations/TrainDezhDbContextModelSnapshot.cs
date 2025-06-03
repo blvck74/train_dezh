@@ -94,23 +94,23 @@ namespace TrainDezhApp.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6399),
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3892),
                             Description = "Сход вагона на км 15",
                             Location = "км 15",
-                            OccurredAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6398),
-                            ReportedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6398),
+                            OccurredAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3892),
+                            ReportedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3892),
                             Severity = "Критическая",
                             Status = "Расследуется"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6405),
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3900),
                             Description = "Неисправность светофора",
                             Equipment = "Светофор №12",
                             Location = "км 25",
-                            OccurredAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6405),
-                            ReportedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6405),
+                            OccurredAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3900),
+                            ReportedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3900),
                             Severity = "Средняя",
                             Status = "Устранена"
                         });
@@ -169,7 +169,7 @@ namespace TrainDezhApp.Migrations
                             ConnectionTimeout = 30,
                             Database = "train_dezh",
                             Host = "localhost",
-                            LastUpdated = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6191),
+                            LastUpdated = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3705),
                             Password = "",
                             Port = 5432,
                             UseSSL = false,
@@ -249,7 +249,7 @@ namespace TrainDezhApp.Migrations
                         {
                             Id = 1,
                             Category = "Запчасти",
-                            LastUpdated = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6428),
+                            LastUpdated = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3922),
                             MinQuantity = 5m,
                             Name = "Тормозные колодки",
                             Price = 2500.00m,
@@ -261,7 +261,7 @@ namespace TrainDezhApp.Migrations
                         {
                             Id = 2,
                             Category = "ГСМ",
-                            LastUpdated = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6445),
+                            LastUpdated = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(4004),
                             MinQuantity = 10m,
                             Name = "Масло моторное",
                             Price = 450.00m,
@@ -273,7 +273,7 @@ namespace TrainDezhApp.Migrations
                         {
                             Id = 3,
                             Category = "Крепеж",
-                            LastUpdated = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6447),
+                            LastUpdated = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(4007),
                             MinQuantity = 20m,
                             Name = "Болты М12",
                             Price = 15.00m,
@@ -470,7 +470,7 @@ namespace TrainDezhApp.Migrations
                             Department = "Отдел Г",
                             EmployeeNumber = "001",
                             FirstName = "Иван",
-                            HiredAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6330),
+                            HiredAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3826),
                             IsOnShift = true,
                             LastName = "Петров",
                             Position = "Дежурный по станции",
@@ -482,7 +482,7 @@ namespace TrainDezhApp.Migrations
                             Department = "Отдел Г",
                             EmployeeNumber = "002",
                             FirstName = "Мария",
-                            HiredAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6338),
+                            HiredAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3835),
                             IsOnShift = true,
                             LastName = "Сидорова",
                             Position = "Машинист",
@@ -494,11 +494,64 @@ namespace TrainDezhApp.Migrations
                             Department = "Отдел Г",
                             EmployeeNumber = "003",
                             FirstName = "Алексей",
-                            HiredAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6339),
+                            HiredAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3836),
                             IsOnShift = false,
                             LastName = "Козлов",
                             Position = "Слесарь",
                             Status = "Активен"
+                        });
+                });
+
+            modelBuilder.Entity("TrainDezhApp.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(5012),
+                            FullName = "Администратор",
+                            IsActive = true,
+                            PasswordHash = "JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=",
+                            Role = 1,
+                            Username = "root"
                         });
                 });
 
@@ -568,7 +621,7 @@ namespace TrainDezhApp.Migrations
                         {
                             Id = 1,
                             AssignedTo = "Козлов А.",
-                            CreatedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6368),
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3860),
                             Equipment = "Локомотив №1234",
                             Priority = "Средний",
                             Status = "Выполняется",
@@ -578,7 +631,7 @@ namespace TrainDezhApp.Migrations
                         {
                             Id = 2,
                             AssignedTo = "Сидорова М.",
-                            CreatedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6376),
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3867),
                             Equipment = "Вагон №5678",
                             Priority = "Низкий",
                             Status = "Завершено",
@@ -587,7 +640,7 @@ namespace TrainDezhApp.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 6, 3, 7, 35, 31, 552, DateTimeKind.Utc).AddTicks(6377),
+                            CreatedAt = new DateTime(2025, 6, 3, 8, 23, 50, 963, DateTimeKind.Utc).AddTicks(3868),
                             Location = "км 25",
                             Priority = "Высокий",
                             Status = "Новая",

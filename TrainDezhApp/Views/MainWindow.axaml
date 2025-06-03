@@ -68,10 +68,10 @@
                                    FontSize="12" 
                                    Foreground="#64748B"
                                    Margin="0,0,0,4"/>
-                        <TextBlock Text="Иванов И.И." 
+                        <TextBlock Text="{Binding CurrentUserName}" 
                                    FontWeight="Medium" 
                                    FontSize="14"/>
-                        <TextBlock Text="Дежурный по депо" 
+                        <TextBlock Text="{Binding CurrentUserRole}" 
                                    FontSize="12" 
                                    Foreground="#64748B"/>
                     </StackPanel>
@@ -123,6 +123,11 @@
                     <!-- Шаблон для параметров -->
                     <DataTemplate DataType="vm:SettingsViewModel">
                         <views:SettingsView/>
+                    </DataTemplate>
+                    
+                    <!-- Шаблон для управления пользователями -->
+                    <DataTemplate DataType="vm:UserManagementViewModel">
+                        <views:UserManagementView/>
                     </DataTemplate>
                     
                 </ContentControl.DataTemplates>

@@ -10,9 +10,12 @@ public static class ServiceCollectionExtensions
         // Регистрируем сервисы
         services.AddSingleton<IDatabaseService, DatabaseService>();
         services.AddSingleton<IDataService, DataService>();
+        services.AddScoped<IUserService, UserService>();
         
         // Регистрируем ViewModels
         services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<UserManagementViewModel>();
         services.AddTransient<DashboardViewModel>();
         services.AddTransient<WorksViewModel>();
         services.AddTransient<AccidentsViewModel>();

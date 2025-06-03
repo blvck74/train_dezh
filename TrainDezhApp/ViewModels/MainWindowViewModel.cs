@@ -1,6 +1,8 @@
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using TrainDezhApp.Services;
+using TrainDezhApp.Models;
 
 namespace TrainDezhApp.ViewModels;
 
@@ -8,9 +10,12 @@ public class MainWindowViewModel : ViewModelBase
 {
     private ViewModelBase _currentPage = null!;
     private NavigationItem _selectedNavItem = null!;
+    private readonly IUserService _userService;
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IUserService userService)
     {
+        _userService = userService;
+        
         NavigationItems = new ObservableCollection<NavigationItem>
         {
             new NavigationItem("Дашборд", "📊", new DashboardViewModel()),
@@ -23,10 +28,21 @@ public class MainWindowViewModel : ViewModelBase
             new NavigationItem("Параметры", "⚙️", new SettingsViewModel())
         };
 
+        // Добавляем вкладку управления пользователями только для администраторов
+        if (CurrentUser.IsAdministrator)
+        {
+            NavigationItems.Add(new NavigationItem("Пользователи", "👥", new UserManagementViewModel(_userService)));
+        }
+
         SelectedNavItem = NavigationItems[0];
         CurrentPage = SelectedNavItem.ViewModel;
 
         NavigateCommand = ReactiveCommand.Create<NavigationItem>(Navigate);
+    }
+
+    // Конструктор без параметров для дизайнера
+    public MainWindowViewModel() : this(null!)
+    {
     }
 
     public ObservableCollection<NavigationItem> NavigationItems { get; }
@@ -44,6 +60,15 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public ReactiveCommand<NavigationItem, Unit> NavigateCommand { get; }
+
+    public string CurrentUserName => CurrentUser.Instance?.FullName ?? "Неизвестный пользователь";
+    
+    public string CurrentUserRole => CurrentUser.Instance?.Role switch
+    {
+        UserRole.Administrator => "Администратор",
+        UserRole.User => "Пользователь",
+        _ => "Неизвестная роль"
+    };
 
     private void Navigate(NavigationItem navItem)
     {

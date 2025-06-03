@@ -117,4 +117,40 @@
         <Setter Property="Margin" Value="0,4,0,0"/>
     </Style>
 
+    <!-- Стили для ролей пользователей -->
+    <Style Selector="Border.role-badge">
+        <Setter Property="Background" Value="#E0E7FF"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.role-badge.admin">
+        <Setter Property="Background" Value="#FEF3C7"/>
+    </Style>
+
+    <Style Selector="Border.role-badge TextBlock">
+        <Setter Property="Foreground" Value="#3730A3"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Border.role-badge.admin TextBlock">
+        <Setter Property="Foreground" Value="#92400E"/>
+    </Style>
+
+    <!-- Стили для кнопок-иконок -->
+    <Style Selector="Button.icon-button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="MinWidth" Value="24"/>
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style Selector="Button.icon-button:pointerover">
+        <Setter Property="Background" Value="#E2E8F0"/>
+    </Style>
+
 </Styles>

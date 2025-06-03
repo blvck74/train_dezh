@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TrainDezhApp.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TrainDezhApp.Services;
 
@@ -12,6 +14,7 @@ public class TrainDezhDbContext : DbContext
     public DbSet<Note> Notes { get; set; }
     public DbSet<ShiftHandover> ShiftHandovers { get; set; }
     public DbSet<DatabaseSettings> DatabaseSettings { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public TrainDezhDbContext(DbContextOptions<TrainDezhDbContext> options) : base(options)
     {
@@ -86,6 +89,16 @@ public class TrainDezhDbContext : DbContext
             entity.Property(e => e.LastUpdated).HasDefaultValueSql("CURRENT_TIMESTAMP");
         });
 
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("users");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.HasIndex(e => e.Username).IsUnique();
+            entity.Property(e => e.FullName).HasMaxLength(100);
+            entity.Property(e => e.Username).HasMaxLength(50);
+        });
+
         // Начальные данные
         SeedData(modelBuilder);
     }
@@ -133,5 +146,26 @@ public class TrainDezhDbContext : DbContext
             new Material { Id = 2, Name = "Масло моторное", Category = "ГСМ", Unit = "л", Quantity = 3, MinQuantity = 10, Status = "Заканчивается", Price = 450.00m },
             new Material { Id = 3, Name = "Болты М12", Category = "Крепеж", Unit = "шт", Quantity = 100, MinQuantity = 20, Status = "В наличии", Price = 15.00m }
         );
+
+        // Пользователи по умолчанию
+        modelBuilder.Entity<User>().HasData(
+            new User 
+            { 
+                Id = 1, 
+                FullName = "Администратор", 
+                Username = "root", 
+                PasswordHash = HashPassword("admin123"), 
+                Role = UserRole.Administrator, 
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            }
+        );
+    }
+
+    private static string HashPassword(string password)
+    {
+        using var sha256 = SHA256.Create();
+        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(hashedBytes);
     }
 }
