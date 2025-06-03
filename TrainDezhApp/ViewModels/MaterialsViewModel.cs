@@ -1,35 +1,111 @@
+using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.Reactive;
+using TrainDezhApp.Models;
+using TrainDezhApp.Services;
 
 namespace TrainDezhApp.ViewModels;
 
 public class MaterialsViewModel : ViewModelBase
 {
-    public MaterialsViewModel()
+    private readonly IDataService _dataService;
+    
+    public ObservableCollection<Material> Materials { get; }
+    public ReactiveCommand<Unit, Unit> AddMaterialCommand { get; }
+    public ReactiveCommand<Material, Unit> EditMaterialCommand { get; }
+    public ReactiveCommand<Material, Unit> DeleteMaterialCommand { get; }
+    public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
+
+    public MaterialsViewModel(IDataService? dataService = null)
     {
-        Materials = new ObservableCollection<MaterialViewModel>
+        _dataService = dataService ?? new DataService(new DatabaseService());
+        Materials = new ObservableCollection<Material>();
+
+        AddMaterialCommand = ReactiveCommand.CreateFromTask(AddMaterial);
+        EditMaterialCommand = ReactiveCommand.CreateFromTask<Material>(EditMaterial);
+        DeleteMaterialCommand = ReactiveCommand.CreateFromTask<Material>(DeleteMaterial);
+        RefreshCommand = ReactiveCommand.CreateFromTask(LoadMaterials);
+
+        // Загружаем данные при инициализации
+        _ = LoadMaterials();
+    }
+
+    private async Task LoadMaterials()
+    {
+        try
         {
-            new MaterialViewModel("Насос центробежный", "12", "шт", "В наличии"),
-            new MaterialViewModel("Трубы стальные Ø100", "250", "м", "В наличии"),
-            new MaterialViewModel("Кабель силовой", "50", "м", "Мало"),
-            new MaterialViewModel("Датчики давления", "3", "шт", "Заказано")
-        };
+            var materials = await _dataService.GetMaterialsAsync();
+            Materials.Clear();
+            foreach (var material in materials)
+            {
+                Materials.Add(material);
+            }
+        }
+        catch
+        {
+            // Fallback к тестовым данным
+            Materials.Clear();
+            var testMaterials = new[]
+            {
+                new Material { Id = 1, Name = "Насос центробежный", Quantity = 12, Unit = "шт", Status = "В наличии" },
+                new Material { Id = 2, Name = "Трубы стальные Ø100", Quantity = 250, Unit = "м", Status = "В наличии" },
+                new Material { Id = 3, Name = "Кабель силовой", Quantity = 50, Unit = "м", Status = "Мало" },
+                new Material { Id = 4, Name = "Датчики давления", Quantity = 3, Unit = "шт", Status = "Заказано" }
+            };
+            
+            foreach (var material in testMaterials)
+            {
+                Materials.Add(material);
+            }
+        }
     }
 
-    public ObservableCollection<MaterialViewModel> Materials { get; }
-}
-
-public class MaterialViewModel
-{
-    public MaterialViewModel(string name, string quantity, string unit, string status)
+    private async Task AddMaterial()
     {
-        Name = name;
-        Quantity = quantity;
-        Unit = unit;
-        Status = status;
+        try
+        {
+            var newMaterial = new Material
+            {
+                Name = "Новый материал",
+                Quantity = 0,
+                Unit = "шт",
+                Status = "В наличии"
+            };
+
+            var success = await _dataService.AddMaterialAsync(newMaterial);
+            if (success)
+            {
+                await LoadMaterials(); // Перезагружаем данные
+            }
+        }
+        catch
+        {
+            // Обработка ошибки
+        }
     }
 
-    public string Name { get; }
-    public string Quantity { get; }
-    public string Unit { get; }
-    public string Status { get; }
+    private async Task EditMaterial(Material material)
+    {
+        try
+        {
+            await _dataService.UpdateMaterialAsync(material);
+        }
+        catch
+        {
+            // Обработка ошибки
+        }
+    }
+
+    private async Task DeleteMaterial(Material material)
+    {
+        try
+        {
+            await _dataService.DeleteMaterialAsync(material.Id);
+            Materials.Remove(material);
+        }
+        catch
+        {
+            // Обработка ошибки
+        }
+    }
 }

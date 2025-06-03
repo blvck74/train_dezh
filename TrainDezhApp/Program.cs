@@ -1,7 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using TrainDezhApp.Services;
 
 namespace TrainDezhApp;
 
@@ -21,4 +23,11 @@ class Program
             .WithInterFont()
             .LogToTrace()
             .UseReactiveUI();
+
+    public static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+        services.AddApplicationServices();
+        return services.BuildServiceProvider();
+    }
 }

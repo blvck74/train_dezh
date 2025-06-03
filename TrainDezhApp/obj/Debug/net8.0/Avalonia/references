@@ -35,8 +35,8 @@
 /root/.nuget/packages/microsoft.extensions.caching.abstractions/8.0.0/lib/net8.0/Microsoft.Extensions.Caching.Abstractions.dll
 /root/.nuget/packages/microsoft.extensions.caching.memory/8.0.0/lib/net8.0/Microsoft.Extensions.Caching.Memory.dll
 /root/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
-/root/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
-/root/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/lib/net8.0/Microsoft.Extensions.DependencyInjection.dll
+/root/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.5/lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/root/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.5/lib/net8.0/Microsoft.Extensions.DependencyInjection.dll
 /root/.nuget/packages/microsoft.extensions.dependencymodel/8.0.0/lib/net8.0/Microsoft.Extensions.DependencyModel.dll
 /root/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
 /root/.nuget/packages/microsoft.extensions.logging/8.0.0/lib/net8.0/Microsoft.Extensions.Logging.dll

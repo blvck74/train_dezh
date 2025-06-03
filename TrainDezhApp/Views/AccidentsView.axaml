@@ -81,7 +81,7 @@
                                         </Border>
                                         
                                         <TextBlock Grid.Column="2" 
-                                                   Text="{Binding Time}" 
+                                                   Text="{Binding OccurredAt, StringFormat='{}{0:HH:mm}'}" 
                                                    FontSize="14"
                                                    VerticalAlignment="Center"/>
                                         

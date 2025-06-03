@@ -14,24 +14,119 @@
             <!-- Настройки базы данных -->
             <Border Classes="card" Margin="0,0,0,24">
                 <StackPanel>
-                    <TextBlock Text="База данных" 
-                               FontSize="16" 
-                               FontWeight="SemiBold" 
-                               Margin="0,0,0,16"/>
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                        <TextBlock Text="База данных" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Grid.Column="0"/>
+                        
+                        <Button Content="✏️ Редактировать" 
+                                Command="{Binding EditDatabaseCommand}"
+                                IsVisible="{Binding !IsEditingDatabase}"
+                                Background="#2563EB" 
+                                Foreground="White" 
+                                Padding="12,8" 
+                                CornerRadius="6"
+                                Grid.Column="1"/>
+                    </Grid>
                     
-                    <TextBlock Text="Строка подключения:" 
-                               FontSize="14" 
-                               Margin="0,0,0,8"/>
-                    <TextBox Text="{Binding DatabaseConnection}" 
-                             Watermark="Server=localhost;Database=TrainDezh;User Id=postgres;Password=;"/>
+                    <!-- Режим просмотра -->
+                    <StackPanel IsVisible="{Binding !IsEditingDatabase}">
+                        <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock Text="Сервер:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding DatabaseSettings.Host}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="Порт:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding DatabaseSettings.Port}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="База данных:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding DatabaseSettings.Database}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="Пользователь:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding DatabaseSettings.Username}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,8"/>
+                            
+                            <TextBlock Text="SSL:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DatabaseSettings.UseSSL}" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <TextBlock Text="{Binding ConnectionStatus}" 
+                                   FontWeight="SemiBold"
+                                   Foreground="#10B981"
+                                   Margin="0,12,0,0"/>
+                    </StackPanel>
                     
-                    <Button Content="🔗 Проверить подключение" 
-                            Background="#10B981" 
-                            Foreground="White" 
-                            Padding="12,8" 
-                            Margin="0,12,0,0"
-                            HorizontalAlignment="Left"
-                            CornerRadius="6"/>
+                    <!-- Режим редактирования -->
+                    <StackPanel IsVisible="{Binding IsEditingDatabase}">
+                        <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock Text="Сервер:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <TextBox Text="{Binding DatabaseSettings.Host}" 
+                                     Grid.Row="0" Grid.Column="1"
+                                     Watermark="localhost" Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="Порт:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <NumericUpDown Value="{Binding DatabaseSettings.Port}" 
+                                           Grid.Row="1" Grid.Column="1"
+                                           Minimum="1" Maximum="65535" Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="База данных:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <TextBox Text="{Binding DatabaseSettings.Database}" 
+                                     Grid.Row="2" Grid.Column="1"
+                                     Watermark="train_dezh" Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="Пользователь:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <TextBox Text="{Binding DatabaseSettings.Username}" 
+                                     Grid.Row="3" Grid.Column="1"
+                                     Watermark="postgres" Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="Пароль:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <TextBox Text="{Binding DatabaseSettings.Password}" 
+                                     Grid.Row="4" Grid.Column="1"
+                                     PasswordChar="*"
+                                     Watermark="Пароль" Margin="0,0,0,12"/>
+                            
+                            <TextBlock Text="Таймаут (сек):" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <NumericUpDown Value="{Binding DatabaseSettings.ConnectionTimeout}" 
+                                           Grid.Row="5" Grid.Column="1"
+                                           Minimum="5" Maximum="300" Margin="0,0,0,12"/>
+                            
+                            <CheckBox Content="Использовать SSL" 
+                                      IsChecked="{Binding DatabaseSettings.UseSSL}"
+                                      Grid.Row="6" Grid.Column="1"/>
+                        </Grid>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
+                            <Button Content="💾 Сохранить" 
+                                    Command="{Binding SaveDatabaseCommand}"
+                                    Background="#10B981" 
+                                    Foreground="White" 
+                                    Padding="12,8" 
+                                    CornerRadius="6"/>
+                            <Button Content="❌ Отмена" 
+                                    Command="{Binding CancelEditCommand}"
+                                    Background="#64748B" 
+                                    Foreground="White" 
+                                    Padding="12,8" 
+                                    CornerRadius="6"/>
+                            <Button Content="🔗 Тест подключения" 
+                                    Command="{Binding TestConnectionCommand}"
+                                    IsEnabled="{Binding !IsTestingConnection}"
+                                    Background="#F59E0B" 
+                                    Foreground="White" 
+                                    Padding="12,8" 
+                                    CornerRadius="6"/>
+                            <Button Content="🗄️ Инициализировать БД" 
+                                    Command="{Binding InitializeDatabaseCommand}"
+                                    Background="#EF4444" 
+                                    Foreground="White" 
+                                    Padding="12,8" 
+                                    CornerRadius="6"/>
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding ConnectionStatus}" 
+                                   FontWeight="SemiBold"
+                                   Foreground="#10B981"
+                                   Margin="0,12,0,0"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -50,7 +145,8 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
                         <TextBlock Text="Интервал обновления (сек):" 
                                    VerticalAlignment="Center" 
-                                   Margin="0,0,12,0"/>
+                                   Margin="0,0,12,0"
+                                   FontWeight="SemiBold"/>
                         <NumericUpDown Value="{Binding RefreshInterval}" 
                                        Minimum="5" 
                                        Maximum="300" 
@@ -59,20 +155,22 @@
                 </StackPanel>
             </Border>
 
-            <!-- Кнопки действий -->
-            <StackPanel Orientation="Horizontal">
-                <Button Content="💾 Сохранить настройки" 
-                        Background="#2563EB" 
-                        Foreground="White" 
-                        Padding="16,12" 
-                        Margin="0,0,12,0"
-                        CornerRadius="8"/>
-                <Button Content="🔄 Сбросить" 
-                        Background="#64748B" 
-                        Foreground="White" 
-                        Padding="16,12" 
-                        CornerRadius="8"/>
-            </StackPanel>
+            <!-- Информация о приложении -->
+            <Border Classes="card" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="О приложении" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,16"/>
+                    
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="TrainDezhApp v1.0" FontWeight="SemiBold"/>
+                        <TextBlock Text="Система управления железнодорожной станцией"/>
+                        <TextBlock Text="Avalonia UI + PostgreSQL + Entity Framework Core"/>
+                        <TextBlock Text="© 2025 TrainDezhApp" Foreground="#64748B"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
 
         </StackPanel>
     </ScrollViewer>

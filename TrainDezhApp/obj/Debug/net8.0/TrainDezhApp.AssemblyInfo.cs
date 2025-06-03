@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrainDezhApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8561d279767a12d53368a33054c458ee92789ce5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+daf521bebc625ac3733c092110a128159e73ee2d")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrainDezhApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrainDezhApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
